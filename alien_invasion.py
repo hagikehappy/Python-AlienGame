@@ -42,7 +42,8 @@ class AlienInvasion:
         if event.key == pygame.K_LEFT:
             self.ship.moving_left = True
         if event.key == pygame.K_SPACE:
-            self.all_bullets.fire_bullet()
+            self.all_bullets.fire_interval = True
+            self.all_bullets.bullets_interval = 0.0
         if event.key == pygame.K_ESCAPE:
             sys.exit()
 
@@ -52,6 +53,8 @@ class AlienInvasion:
             self.ship.moving_right = False
         if event.key == pygame.K_LEFT:
             self.ship.moving_left = False
+        if event.key == pygame.K_SPACE:
+            self.all_bullets.fire_interval = False
 
     def _check_events(self):
         """响应按键和鼠标事件"""

@@ -32,12 +32,20 @@ class All_Bullets:
         self.ai_game = ai_game
         self.bullets = pygame.sprite.Group()
         self.bullets_num = 0
+        self.base_interval = 1.0 / ai_game.settings['refresh_rate']
+        self.next_interval = ai_game.settings['bullet_interval']
+        self.bullets_interval = 0.0
+        self.fire_interval = False
 
-    def fire_bullet(self):
-        """开火后创建一颗新子弹"""
-        if self.bullets_num < self.ai_game.settings['bullet_max']:
-            self.bullets.add(Bullet(self.ai_game))
-            self.bullets_num += 1
+    def _fire_bullet(self):
+        """开火后根据条件创建一颗新子弹"""
+        if (self.bullets_interval == 0.0) or (self.bullets_interval > self.next_interval):
+            if self.bullets_interval != 0.0:
+                self.bullets_interval -= self.next_interval
+            if self.bullets_num < self.ai_game.settings['bullet_max']:
+                self.bullets.add(Bullet(self.ai_game))
+                self.bullets_num += 1
+        self.bullets_interval += self.base_interval
 
     def _clear_bullet(self):
         """清除飞出的子弹"""
@@ -49,6 +57,8 @@ class All_Bullets:
     def update(self):
         """更新子弹状态"""
         self._clear_bullet()
+        if self.fire_interval is True:
+            self._fire_bullet()
         self.bullets.update()
 
     def draw_bullets(self):
