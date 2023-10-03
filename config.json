@@ -1,11 +1,12 @@
 {
-    "screen_width": 1200,
-    "screen_height": 800,
+    "screen_width": 1920,
+    "screen_height": 1080,
     "bg_color": [
         227,
         232,
         246
     ],
     "refresh_rate": 240,
-    "caption": "Alien Invasion"
+    "caption": "Alien Invasion",
+    "ship_speed": 1.5
 }
