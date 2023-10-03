@@ -12,13 +12,15 @@ class Settings:
         self.config['refresh_rate'] = 240
         self.config['caption'] = "Alien Invasion"
         self.config['ship_speed'] = 1.5
+        self.config['fullscreen'] = True
 
         with open(self.config_path, "w") as f:
             json.dump(self.config, f, indent=4)
 
     def check_config(self):
-        check_set = {'screen_width', 'screen_height', 'bg_color'
-                     'refresh_rate', 'caption', 'ship_speed'}
+        check_set = {'screen_width', 'screen_height', 'bg_color',
+                     'refresh_rate', 'caption', 'ship_speed',
+                     'fullscreen'}
         config_set = set(self.config.keys())
         if config_set == check_set:
             pass
@@ -37,8 +39,14 @@ class Settings:
         else:
             self.write_config()
 
-        self.config['one_x'] = self.config['screen_width'] / 1000
-        self.config['one_y'] = self.config['screen_height'] / 1000
+        print("\nConfigure:")
+        for conf, value in self.config.items():
+            print(f"{conf}: {value}")
+        print("\n")
+
+        if not self.config['fullscreen']:
+            self.config['one_x'] = self.config['screen_width'] / 1000
+            self.config['one_y'] = self.config['screen_height'] / 1000
 
 
 if __name__ == '__main__':

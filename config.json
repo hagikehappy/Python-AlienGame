@@ -8,5 +8,6 @@
     ],
     "refresh_rate": 240,
     "caption": "Alien Invasion",
-    "ship_speed": 1.5
+    "ship_speed": 1.5,
+    "fullscreen": true
 }
