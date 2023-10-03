@@ -21,6 +21,6 @@ class Settings:
             self.config['caption'] = "Alien Invasion"
 
             with open(self.config_path, "w") as f:
-                json.dump(self.config, f)
+                json.dump(self.config, f, indent=4)
 
 
