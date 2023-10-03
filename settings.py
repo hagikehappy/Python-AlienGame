@@ -14,9 +14,9 @@ class Settings:
             with open(self.config_path, "r") as f:
                 self.config = json.load(f)
         else:
-            self.config['screen_width'] = 1920
-            self.config['screen_height'] = 1080
-            self.config['bg_color'] = (230, 230, 230)
+            self.config['screen_width'] = 1200
+            self.config['screen_height'] = 800
+            self.config['bg_color'] = (227, 232, 246)
             self.config['refresh_rate'] = 240
             self.config['caption'] = "Alien Invasion"
 
