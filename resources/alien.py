@@ -25,6 +25,11 @@ class Alien(Sprite):
             self.rect.centerx = init_info[0]
             self.rect.centery = init_info[1]
 
+    def _update_speed(self):
+        """个性化的更新速度"""
+        self.one_x = self.all_aliens.one_x
+        self.one_y = self.all_aliens.one_y
+
     def check_edges(self):
         """边缘检测"""
         return (self.rect.right >= self.all_aliens.screen_rect.right) or \
@@ -32,6 +37,7 @@ class Alien(Sprite):
 
     def update(self, fleet_direction_lr, fleet_direction_down):
         """对于单个外星人的更新方法"""
+        self._update_speed()
         self.rect.x += fleet_direction_lr * self.one_x
         if fleet_direction_down:
             self.rect.y += self.one_y
@@ -46,6 +52,9 @@ class All_Aliens:
         self.aliens = pygame.sprite.Group()
         self.alien_init_row = ai_game.settings['alien_init_row']
         self.alien_init_col = ai_game.settings['alien_init_col']
+        self.alien_init_num = self.alien_init_col * self.alien_init_row
+        self.alien_num = self.alien_init_num
+        self.rate_per_alien = 1 / self.alien_init_num
         self.alien_init_cover_rate = ai_game.settings['alien_init_cover_rate']
         self.alien_width = ai_game.screen_rect.width / (self.alien_init_col + 1)
         self.alien_height = ai_game.screen_rect.height * self.alien_init_cover_rate / (self.alien_init_row + 1)
@@ -67,6 +76,23 @@ class All_Aliens:
         self.down_speed = self.ai_game.settings['alien_init_down_speed']
         self.one_x = self.ai_game.settings['one_x'] * self.lr_speed * 240 / self.ai_game.settings['refresh_rate']
         self.one_y = self.ai_game.settings['one_y'] * self.down_speed * 240 / self.ai_game.settings['refresh_rate']
+        self.one_init_x = self.one_x
+        self.one_init_y = self.one_y
+        # 速度变换类属性初始化与标准化过程
+        # 随时间，标准化至单帧
+        self.x_speed_time_up = self.ai_game.settings['alien_lr_speed_time_up'] / self.ai_game.refresh_rate
+        self.x_speed_time_already_up = 1
+        self.x_speed_time_max = self.ai_game.settings['alien_lr_speed_time_max']
+        self.y_speed_time_up = self.ai_game.settings['alien_down_speed_time_up'] / self.ai_game.refresh_rate
+        self.y_speed_time_already_up = 1
+        self.y_speed_time_max = self.ai_game.settings['alien_down_speed_time_max']
+        # 随敌人数量
+        self.x_speed_num_up = self.ai_game.settings['alien_lr_speed_num_up']
+        self.x_speed_num_already_up = 1
+        self.x_speed_num_max = self.ai_game.settings['alien_lr_speed_num_max']
+        self.y_speed_num_up = self.ai_game.settings['alien_down_speed_num_up']
+        self.y_speed_num_already_up = 1
+        self.y_speed_num_max = self.ai_game.settings['alien_down_speed_num_max']
 
     def _create_alien(self, init_info=None):
         """创建一个外星人"""
@@ -76,7 +102,7 @@ class All_Aliens:
         """创建新的一排外星人"""
         new_flag = True
         for alien in self.aliens:
-            if alien.rect.centery < 2 * self.alien_width:
+            if alien.rect.centery < self.alien_width:
                 new_flag = False
                 break
         if new_flag:
@@ -85,8 +111,26 @@ class All_Aliens:
                                     (1 + random.uniform(-0.3, 0.3)) * self.alien_height))
 
     def _update_speed(self):
-        """更新外星人速度"""
-        pass
+        """通用的更新外星人速度"""
+        # x方向更新
+        if self.x_speed_time_already_up < self.x_speed_time_max:
+            self.x_speed_time_already_up += self.x_speed_time_up
+        self.x_speed_num_already_up = 1 + (self.alien_init_num - self.alien_num) * self.x_speed_num_up
+        if self.x_speed_num_already_up > self.x_speed_num_max:
+            self.x_speed_num_already_up = self.x_speed_num_max
+        if self.x_speed_num_already_up < self.lr_speed:
+            self.x_speed_num_already_up = 1
+        # y方向更新
+        if self.y_speed_time_already_up < self.y_speed_time_max:
+            self.y_speed_time_already_up += self.y_speed_time_up
+        self.y_speed_num_already_up = 1 + (self.alien_init_num - self.alien_num) * self.y_speed_num_up
+        if self.y_speed_num_already_up > self.y_speed_num_max:
+            self.y_speed_num_already_up = self.y_speed_num_max
+        if self.y_speed_num_already_up < self.down_speed:
+            self.y_speed_num_already_up = 1
+        # 综合更新
+        self.one_x = self.one_init_x * self.x_speed_time_already_up * self.x_speed_num_already_up
+        self.one_y = self.one_init_y * self.y_speed_time_already_up * self.y_speed_num_already_up
 
     def _create_fleet(self):
         """创建一个外星舰队"""
@@ -108,6 +152,7 @@ class All_Aliens:
         """更新全体外星人状态"""
         self._new_alien()
         self._check_all_edges()
+        self.alien_num = len(self.aliens)
         self._update_speed()
         self.aliens.update(self.fleet_direction_lr, self.fleet_direction_down)
         self.fleet_direction_down = False

@@ -9,8 +9,8 @@ class Ship:
         self.screen = ai_game.screen
         self.screen_rect = ai_game.screen_rect
         self.speed = ai_game.settings['ship_speed']
-        self.one_x = ai_game.settings['one_x'] * self.speed * 240 / ai_game.settings['refresh_rate']
-        self.one_y = ai_game.settings['one_y'] * self.speed * 240 / ai_game.settings['refresh_rate']
+        self.one_x = ai_game.settings['one_x'] * self.speed * 240 / ai_game.refresh_rate
+        self.one_y = ai_game.settings['one_y'] * self.speed * 240 / ai_game.refresh_rate
 
         # 加载飞船图像并获取外接矩阵
         self.image = pygame.image.load('images/ship.bmp')

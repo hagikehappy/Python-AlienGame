@@ -37,7 +37,7 @@ class Settings:
         self.config['fullscreen'] = True
         self.config['bullet_color'] = (60, 60, 60)
         self.config['bullet_speed'] = 10.0
-        self.config['bullet_width'] = 6
+        self.config['bullet_width'] = 10
         self.config['bullet_height'] = 30
         self.config['bullet_max'] = 100
         self.config['bullet_interval'] = 0.05  # second
@@ -47,6 +47,14 @@ class Settings:
         self.config['alien_init_lr_speed'] = 0.5  # 左右移动速度
         self.config['alien_init_down_speed'] = 10     # 碰壁一次向下移动的等效速度值
         self.config['alien_init_direction'] = RIGHT_FORWARD
+        self.config['alien_lr_speed_time_up'] = 0.1     # per second
+        self.config['alien_lr_speed_time_max'] = 5   # times of the initial speed because of time
+        self.config['alien_lr_speed_num_up'] = 0.1     # per second
+        self.config['alien_lr_speed_num_max'] = 5   # times of the initial speed because of num
+        self.config['alien_down_speed_time_up'] = 0.05  # per alien
+        self.config['alien_down_speed_time_max'] = 2  # times of the initial speed because of time
+        self.config['alien_down_speed_num_up'] = 0.05  # per alien
+        self.config['alien_down_speed_num_max'] = 2  # times of the initial speed because of num
 
         with open(self.config_path, "w") as f:
             json.dump(self.config, f, indent=4)
@@ -58,7 +66,11 @@ class Settings:
                      'bullet_width', 'bullet_height', 'bullet_max',
                      'bullet_interval', 'alien_init_row', 'alien_init_col',
                      'alien_init_cover_rate', 'alien_init_lr_speed', 'alien_init_down_speed',
-                     'alien_init_direction'}
+                     'alien_init_direction', 'alien_lr_speed_time_up', 'alien_lr_speed_time_max',
+                     'alien_lr_speed_num_up', 'alien_lr_speed_num_max', 'alien_lr_speed_time_up',
+                     'alien_lr_speed_time_max', 'alien_lr_speed_num_up', 'alien_lr_speed_num_max',
+                     'alien_down_speed_time_up', 'alien_down_speed_time_max', 'alien_down_speed_num_up',
+                     'alien_down_speed_num_max'}
         config_set = set(self.config.keys())
         if config_set == check_set:
             pass

@@ -16,6 +16,8 @@ class AlienInvasion:
         pygame.init()
         self.clock = pygame.time.Clock()
         self.settings = Settings().config
+        self.bg_color = self.settings['bg_color']
+        self.refresh_rate = self.settings['refresh_rate']
 
         # 屏幕设置
         if not self.settings['fullscreen']:
@@ -78,7 +80,7 @@ class AlienInvasion:
 
     def _update_screen(self):
         """画图"""
-        self.screen.fill(self.settings['bg_color'])
+        self.screen.fill(self.bg_color)
         self.ship.blitme()
         self.all_bullets.draw_bullets()
         # 此处直接调用sprite中的draw而无需自己创建draw方法
@@ -93,7 +95,7 @@ class AlienInvasion:
             self._check_events()
             self._update_things()
             self._update_screen()
-            self.clock.tick(self.settings['refresh_rate'])
+            self.clock.tick(self.refresh_rate)
 
 
 if __name__ == '__main__':
