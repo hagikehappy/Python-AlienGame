@@ -7,21 +7,14 @@ from config.extern_var import *
 class Alien(Sprite):
     """表示单个外星人的类"""
 
-    def __init__(self, ai_game, initial_info=None):
+    def __init__(self, all_aliens, initial_info=None):
         """初始化外星人并设置其初始位置"""
         super().__init__()
-        self.screen = ai_game.screen
-        self.screen_rect = ai_game.screen_rect
-
-        # 加载外星人图像并设置其rect属性
-        self.image = pygame.image.load('images/alien.bmp')
-        self.rect = self.image.get_rect()
-
-        # 初始化外星人属性
-        self.lr_speed = ai_game.settings['alien_init_lr_speed']
-        self.down_speed = ai_game.settings['alien_init_down_speed']
-        self.one_x = ai_game.settings['one_x'] * self.lr_speed * 240 / ai_game.settings['refresh_rate']
-        self.one_y = ai_game.settings['one_y'] * self.down_speed * 240 / ai_game.settings['refresh_rate']
+        self.all_aliens = all_aliens
+        self.image = all_aliens.image
+        self.rect = all_aliens.image.get_rect()
+        self.one_x = all_aliens.one_x
+        self.one_y = all_aliens.one_y
 
         # 使每个外星人最初都在指定位置
         # 如果没有指定则在屏幕的左上角离边缘有一个外星人间隔的距离
@@ -34,7 +27,7 @@ class Alien(Sprite):
 
     def check_edges(self):
         """边缘检测"""
-        return (self.rect.right >= self.screen_rect.right) or (self.rect.left <= self.screen_rect.left)
+        return (self.rect.right >= self.all_aliens.screen_rect.right) or (self.rect.left <= self.all_aliens.screen_rect.left)
 
     def update(self, fleet_direction_lr, fleet_direction_down):
         """对于单个外星人的更新方法"""
@@ -57,12 +50,26 @@ class All_Aliens:
         self.alien_height = ai_game.screen_rect.height * self.alien_init_cover_rate / (self.alien_init_row + 1)
         self.fleet_direction_lr = LEFT_FORWARD
         self.fleet_direction_down = False
+        # 公用外星人初始化配置
+        self._common_settings()
         # 创建初始舰队
         self._create_fleet()
 
+    def _common_settings(self):
+        """所有外星人共享的通用设置"""
+        self.screen = self.ai_game.screen
+        self.screen_rect = self.ai_game.screen_rect
+        # 加载外星人图像并设置其rect属性
+        self.image = pygame.image.load('images/alien.bmp')
+        # 初始化外星人属性
+        self.lr_speed = self.ai_game.settings['alien_init_lr_speed']
+        self.down_speed = self.ai_game.settings['alien_init_down_speed']
+        self.one_x = self.ai_game.settings['one_x'] * self.lr_speed * 240 / self.ai_game.settings['refresh_rate']
+        self.one_y = self.ai_game.settings['one_y'] * self.down_speed * 240 / self.ai_game.settings['refresh_rate']
+
     def _create_alien(self, initial_info=None):
         """创建一个外星人"""
-        self.aliens.add(Alien(self.ai_game, initial_info))
+        self.aliens.add(Alien(self, initial_info))
 
     def _new_alien(self):
         """创建新的一排外星人"""
