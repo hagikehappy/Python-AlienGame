@@ -2,9 +2,10 @@ import sys
 
 import pygame
 
-from settings import Settings
-from ship import Ship
-from bullet import Bullet, All_Bullets
+from config.settings import Settings
+from resources.ship import Ship
+from resources.bullet import All_Bullets
+from resources.alien import All_Aliens
 
 
 class AlienInvasion:
@@ -34,6 +35,7 @@ class AlienInvasion:
         # 游戏资源初始化
         self.ship = Ship(self)
         self.all_bullets = All_Bullets(self)
+        self.all_aliens = All_Aliens(self)
 
     def _check_keydown_events(self, event):
         """按下按键时发生的事情"""
@@ -70,12 +72,17 @@ class AlienInvasion:
         """更新场上资源"""
         self.ship.update()
         self.all_bullets.update()
+        self.all_aliens.update()
+        # 碰撞检测，清除外星人
+        pygame.sprite.groupcollide(self.all_bullets.bullets, self.all_aliens.aliens, True, True)
 
     def _update_screen(self):
         """画图"""
         self.screen.fill(self.settings['bg_color'])
         self.ship.blitme()
         self.all_bullets.draw_bullets()
+        # 此处直接调用sprite中的draw而无需自己创建draw方法
+        self.all_aliens.aliens.draw(self.screen)
 
         # 刷新显示
         pygame.display.flip()
