@@ -7,7 +7,7 @@ from config.extern_var import *
 class Alien(Sprite):
     """表示单个外星人的类"""
 
-    def __init__(self, all_aliens, initial_info=None):
+    def __init__(self, all_aliens, init_info=None):
         """初始化外星人并设置其初始位置"""
         super().__init__()
         self.all_aliens = all_aliens
@@ -18,16 +18,17 @@ class Alien(Sprite):
 
         # 使每个外星人最初都在指定位置
         # 如果没有指定则在屏幕的左上角离边缘有一个外星人间隔的距离
-        if initial_info is None:
+        if init_info is None:
             self.rect.centerx = self.rect.width
             self.rect.centery = self.rect.height
         else:
-            self.rect.centerx = initial_info[0]
-            self.rect.centery = initial_info[1]
+            self.rect.centerx = init_info[0]
+            self.rect.centery = init_info[1]
 
     def check_edges(self):
         """边缘检测"""
-        return (self.rect.right >= self.all_aliens.screen_rect.right) or (self.rect.left <= self.all_aliens.screen_rect.left)
+        return (self.rect.right >= self.all_aliens.screen_rect.right) or \
+            (self.rect.left <= self.all_aliens.screen_rect.left)
 
     def update(self, fleet_direction_lr, fleet_direction_down):
         """对于单个外星人的更新方法"""
@@ -67,9 +68,9 @@ class All_Aliens:
         self.one_x = self.ai_game.settings['one_x'] * self.lr_speed * 240 / self.ai_game.settings['refresh_rate']
         self.one_y = self.ai_game.settings['one_y'] * self.down_speed * 240 / self.ai_game.settings['refresh_rate']
 
-    def _create_alien(self, initial_info=None):
+    def _create_alien(self, init_info=None):
         """创建一个外星人"""
-        self.aliens.add(Alien(self, initial_info))
+        self.aliens.add(Alien(self, init_info))
 
     def _new_alien(self):
         """创建新的一排外星人"""
