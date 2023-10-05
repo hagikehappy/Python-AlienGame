@@ -38,6 +38,10 @@ class All_Bullets:
         # 通用子弹设置
         self._common_settings()
 
+    def reinitialize_bullets(self):
+        """重置子弹类"""
+        pass
+
     def _common_settings(self):
         """所有子弹的通用设置"""
         self.screen = self.ai_game.screen

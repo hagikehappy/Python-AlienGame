@@ -115,6 +115,13 @@ class AlienInvasion:
         self.screen.fill(self.bg_color)
         pygame.display.flip()
 
+    def reinitialize_settings(self):
+        """在游戏结束后重置游戏，以便下一次游玩"""
+        self.all_buttons.reinitialize_buttons()
+        self.all_bullets.reinitialize_bullets()
+        self.all_aliens.reinitialize_aliens()
+        self.game_stats.reset_stats()
+
     def run_game(self):
         """开始游戏的主循环"""
         while True:

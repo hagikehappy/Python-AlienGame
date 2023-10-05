@@ -46,6 +46,10 @@ class All_Buttons:
         # 创建起始按钮
         self._create_button('Play', self.ai_game.screen_rect.center, Event_Dict.AT_BEGIN)
 
+    def reinitialize_buttons(self):
+        """再初始化"""
+        self._create_button('Play', self.ai_game.screen_rect.center, Event_Dict.AT_BEGIN)
+
     def _common_settings(self):
         """通用初始化属性"""
         self.button_width = self.ai_game.screen_rect.width / 10

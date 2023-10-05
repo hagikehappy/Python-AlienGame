@@ -26,7 +26,7 @@ class Collision:
         # 清空外星人列表和子弹列表
         self.ai_game.all_bullets.bullets.empty()
         self.ai_game.all_aliens.aliens.empty()
-        # 创建一个新的外星舰队i并初始化飞船
+        # 创建一个新的外星舰队并初始化飞船
         self.ai_game.all_aliens.create_fleet()
         self.ai_game.ship.center_ship()
         # 刷新屏幕
@@ -35,6 +35,10 @@ class Collision:
             self.ai_game.update_screen()
             # 缓冲一段时间
             sleep(2)
+        else:
+            # 进入game over状态
+            pygame.mouse.set_visible(True)
+            self.ai_game.reinitialize_settings()
 
     def _check_aliens_bottom(self):
         """检查是否有外星人到达了屏幕的下边缘"""

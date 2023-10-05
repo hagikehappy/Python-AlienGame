@@ -61,6 +61,10 @@ class All_Aliens:
         self.fleet_direction_lr = LEFT_FORWARD
         self.fleet_direction_down = False
         # 公用外星人初始化配置
+        self.one_x = None
+        self.one_y = None
+        self.y_speed_num_already_up = None
+        self.x_speed_num_already_up = None
         self._common_settings()
         # 创建初始舰队
         self.create_fleet()
@@ -93,6 +97,13 @@ class All_Aliens:
         self.y_speed_num_up = self.ai_game.settings['alien_down_speed_num_up']
         self.y_speed_num_already_up = 1
         self.y_speed_num_max = self.ai_game.settings['alien_down_speed_num_max']
+
+    def reinitialize_aliens(self):
+        """重置外星人类"""
+        self.one_x = self.one_init_x
+        self.one_y = self.one_init_y
+        self.x_speed_num_already_up = 1
+        self.y_speed_num_already_up = 1
 
     def _create_alien(self, init_info=None):
         """创建一个外星人"""

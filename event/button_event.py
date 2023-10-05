@@ -1,5 +1,6 @@
 from enum import Enum
 import pygame
+from time import sleep
 
 
 class Event_Dict(Enum):
@@ -23,7 +24,9 @@ class Button_Event:
         if mouse == pygame.MOUSEBUTTONUP:
             print("Mouse Up")
             self.ai_game.game_stats.game_at_begin = False
+            pygame.mouse.set_visible(False)
             self.all_buttons.clear_button(button)
+            sleep(2)
         elif mouse == pygame.MOUSEBUTTONDOWN:
             for i in range(3):
                 button.button_color[i] *= 1.5
