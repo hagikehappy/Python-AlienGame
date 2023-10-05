@@ -12,7 +12,12 @@ class Collision:
     def collide_check(self):
         """检测是否发生碰撞"""
         # 检测子弹和外星人
-        pygame.sprite.groupcollide(self.ai_game.all_bullets.bullets, self.ai_game.all_aliens.aliens, True, True)
+        collisions = pygame.sprite.groupcollide(self.ai_game.all_bullets.bullets,
+                                                self.ai_game.all_aliens.aliens, True, True)
+        if collisions:
+            for aliens in collisions.values():
+                self.ai_game.game_stats.score += self.ai_game.game_stats.alien_points * len(aliens)
+            self.ai_game.scoreboard.prep_score()
         # 检测飞船和外星人
         if pygame.sprite.spritecollideany(self.ai_game.ship, self.ai_game.all_aliens.aliens):
             self._ship_hit()

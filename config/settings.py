@@ -56,6 +56,9 @@ class Settings:
         self.config['alien_down_speed_num_up'] = 0.05  # per alien
         self.config['alien_down_speed_num_max'] = 2  # times of the initial speed because of num
         self.config['ship_limits'] = 3
+        self.config['alien_points'] = 5
+        self.config['alien_points_speed_up'] = 0.1  # per second
+        self.config['alien_points_speed_max'] = 2
 
         with open(self.config_path, "w") as f:
             json.dump(self.config, f, indent=4)
@@ -71,7 +74,8 @@ class Settings:
                      'alien_lr_speed_num_up', 'alien_lr_speed_num_max', 'alien_lr_speed_time_up',
                      'alien_lr_speed_time_max', 'alien_lr_speed_num_up', 'alien_lr_speed_num_max',
                      'alien_down_speed_time_up', 'alien_down_speed_time_max', 'alien_down_speed_num_up',
-                     'alien_down_speed_num_max', 'ship_limits'}
+                     'alien_down_speed_num_max', 'ship_limits', 'alien_points',
+                     'alien_points_speed_up', 'alien_points_speed_max'}
         config_set = set(self.config.keys())
         if config_set == check_set:
             pass

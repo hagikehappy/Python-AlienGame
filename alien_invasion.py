@@ -9,6 +9,7 @@ from resources.alien import All_Aliens
 from result.game_stats import GameStats
 from event.collision import Collision
 from event.button import All_Buttons
+from result.scoreboard import Scoreboard
 
 
 class AlienInvasion:
@@ -41,9 +42,10 @@ class AlienInvasion:
         self.ship = Ship(self)
         self.all_bullets = All_Bullets(self)
         self.all_aliens = All_Aliens(self)
-        self.game_stats = GameStats(self)
-        self.all_collisions = Collision(self)
         self.all_buttons = All_Buttons(self)
+        self.all_collisions = Collision(self)
+        self.game_stats = GameStats(self)
+        self.scoreboard = Scoreboard(self)
 
     def _check_keydown_events(self, event):
         """按下按键时发生的事情"""
@@ -100,6 +102,7 @@ class AlienInvasion:
         self.all_bullets.draw_bullets()
         # 此处直接调用sprite中的draw而无需自己创建draw方法
         self.all_aliens.aliens.draw(self.screen)
+        self.scoreboard.show_score()
 
         # 刷新显示
         pygame.display.flip()
@@ -121,6 +124,7 @@ class AlienInvasion:
         self.all_bullets.reinitialize_bullets()
         self.all_aliens.reinitialize_aliens()
         self.game_stats.reset_stats()
+        self.scoreboard.prep_score()
 
     def run_game(self):
         """开始游戏的主循环"""

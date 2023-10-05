@@ -14,6 +14,8 @@ class GameStats:
         self.ships_left = self.ships_init
         self.game_active = True
         self.game_at_begin = True
+        self.score = 0
+        self.alien_points = self.ai_game.settings['alien_points']
 
     def game_check(self):
         """检测游戏活动状态"""

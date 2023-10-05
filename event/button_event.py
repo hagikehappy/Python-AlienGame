@@ -22,7 +22,6 @@ class Button_Event:
     def at_begin_event(self, mouse, button):
         """初始页面抬起按钮行为"""
         if mouse == pygame.MOUSEBUTTONUP:
-            print("Mouse Up")
             self.ai_game.game_stats.game_at_begin = False
             pygame.mouse.set_visible(False)
             self.all_buttons.clear_button(button)
