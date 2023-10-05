@@ -63,7 +63,7 @@ class All_Aliens:
         # 公用外星人初始化配置
         self._common_settings()
         # 创建初始舰队
-        self._create_fleet()
+        self.create_fleet()
 
     def _common_settings(self):
         """所有外星人共享的通用设置"""
@@ -132,7 +132,7 @@ class All_Aliens:
         self.one_x = self.one_init_x * self.x_speed_time_already_up * self.x_speed_num_already_up
         self.one_y = self.one_init_y * self.y_speed_time_already_up * self.y_speed_num_already_up
 
-    def _create_fleet(self):
+    def create_fleet(self):
         """创建一个外星舰队"""
         # 创建一阵列外星人
         for i in range(1, self.alien_init_col + 1):

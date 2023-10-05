@@ -23,8 +23,8 @@
     "alien_init_row": 5,
     "alien_init_col": 10,
     "alien_init_cover_rate": 0.6,
-    "alien_init_lr_speed": 0.5,
-    "alien_init_down_speed": 10,
+    "alien_init_lr_speed": 5,
+    "alien_init_down_speed": 100,
     "alien_init_direction": 1,
     "alien_lr_speed_time_up": 0.1,
     "alien_lr_speed_time_max": 5,
@@ -33,5 +33,6 @@
     "alien_down_speed_time_up": 0.05,
     "alien_down_speed_time_max": 2,
     "alien_down_speed_num_up": 0.05,
-    "alien_down_speed_num_max": 2
+    "alien_down_speed_num_max": 2,
+    "ship_limits": 3
 }

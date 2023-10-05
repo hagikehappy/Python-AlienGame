@@ -17,7 +17,7 @@ class Ship:
         self.rect = self.image.get_rect()
 
         # 每艘性飞船都放在屏幕底部中央
-        self.rect.midbottom = self.screen_rect.midbottom
+        self.center_ship()
 
         # 移动标志
         self.moving_right = False
@@ -29,6 +29,10 @@ class Ship:
             self.rect.x += self.one_x
         if self.moving_left and self.rect.left > self.screen_rect.left:
             self.rect.x -= self.one_x
+
+    def center_ship(self):
+        """重置飞船"""
+        self.rect.midbottom = self.screen_rect.midbottom
 
     def blitme(self):
         """在指定位置创建飞船"""

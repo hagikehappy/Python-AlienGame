@@ -6,6 +6,8 @@ from config.settings import Settings
 from resources.ship import Ship
 from resources.bullet import All_Bullets
 from resources.alien import All_Aliens
+from result.game_stats import GameStats
+from deal.collision import Collision
 
 
 class AlienInvasion:
@@ -38,6 +40,8 @@ class AlienInvasion:
         self.ship = Ship(self)
         self.all_bullets = All_Bullets(self)
         self.all_aliens = All_Aliens(self)
+        self.game_stats = GameStats(self)
+        self.all_collisions = Collision(self)
 
     def _check_keydown_events(self, event):
         """按下按键时发生的事情"""
@@ -75,10 +79,9 @@ class AlienInvasion:
         self.ship.update()
         self.all_bullets.update()
         self.all_aliens.update()
-        # 碰撞检测，清除外星人
-        pygame.sprite.groupcollide(self.all_bullets.bullets, self.all_aliens.aliens, True, True)
+        self.all_collisions.collide_check()
 
-    def _update_screen(self):
+    def update_screen(self):
         """画图"""
         self.screen.fill(self.bg_color)
         self.ship.blitme()
@@ -89,12 +92,21 @@ class AlienInvasion:
         # 刷新显示
         pygame.display.flip()
 
+    def _game_over(self):
+        """定义游戏结束后的行为"""
+        self.screen.fill(self.bg_color)
+        pygame.display.flip()
+
     def run_game(self):
         """开始游戏的主循环"""
         while True:
             self._check_events()
-            self._update_things()
-            self._update_screen()
+            self.game_stats.game_check()
+            if self.game_stats.game_active:
+                self._update_things()
+                self.update_screen()
+            else:
+                self._game_over()
             self.clock.tick(self.refresh_rate)
 
 
