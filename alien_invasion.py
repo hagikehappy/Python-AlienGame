@@ -66,20 +66,12 @@ class AlienInvasion:
         if event.key == pygame.K_SPACE:
             self.all_bullets.fire_interval = False
 
-    def _check_mousedown_events(self, event):
-        """按下鼠标事件"""
+    def _check_mouse_events(self, mouse_event):
+        """鼠标事件，至于具体行为留到Button_Event中处理"""
         mouse_pos = pygame.mouse.get_pos()
         for button in self.all_buttons.buttons.sprites():
             if button.button_rect.collidepoint(mouse_pos):
-                button.mousedown_event()
-                break
-
-    def _check_mouseup_events(self, event):
-        """抬起鼠标事件"""
-        mouse_pos = pygame.mouse.get_pos()
-        for button in self.all_buttons.buttons.sprites():
-            if button.button_rect.collidepoint(mouse_pos):
-                button.mouseup_event()
+                button.mouse_event(mouse_event, button)
                 break
 
     def _check_events(self):
@@ -91,10 +83,8 @@ class AlienInvasion:
                 self._check_keydown_events(event)
             if event.type == pygame.KEYUP:
                 self._check_keyup_events(event)
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                self._check_mousedown_events(event)
-            if event.type == pygame.MOUSEBUTTONUP:
-                self._check_mouseup_events(event)
+            if (event.type == pygame.MOUSEBUTTONDOWN) or (event.type == pygame.MOUSEBUTTONUP):
+                self._check_mouse_events(event.type)
 
     def _update_things(self):
         """更新场上资源"""
