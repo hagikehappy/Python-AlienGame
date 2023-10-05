@@ -13,6 +13,7 @@ class GameStats:
         self.ships_init = self.ai_game.settings['ship_limits']
         self.ships_left = self.ships_init
         self.game_active = True
+        self.game_at_begin = True
 
     def game_check(self):
         """检测游戏活动状态"""

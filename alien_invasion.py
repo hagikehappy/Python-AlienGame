@@ -7,7 +7,8 @@ from resources.ship import Ship
 from resources.bullet import All_Bullets
 from resources.alien import All_Aliens
 from result.game_stats import GameStats
-from deal.collision import Collision
+from event.collision import Collision
+from event.button import All_Buttons
 
 
 class AlienInvasion:
@@ -42,6 +43,7 @@ class AlienInvasion:
         self.all_aliens = All_Aliens(self)
         self.game_stats = GameStats(self)
         self.all_collisions = Collision(self)
+        self.all_buttons = All_Buttons(self)
 
     def _check_keydown_events(self, event):
         """按下按键时发生的事情"""
@@ -64,15 +66,35 @@ class AlienInvasion:
         if event.key == pygame.K_SPACE:
             self.all_bullets.fire_interval = False
 
+    def _check_mousedown_events(self, event):
+        """按下鼠标事件"""
+        mouse_pos = pygame.mouse.get_pos()
+        for button in self.all_buttons.buttons.sprites():
+            if button.button_rect.collidepoint(mouse_pos):
+                button.mousedown_event()
+                break
+
+    def _check_mouseup_events(self, event):
+        """抬起鼠标事件"""
+        mouse_pos = pygame.mouse.get_pos()
+        for button in self.all_buttons.buttons.sprites():
+            if button.button_rect.collidepoint(mouse_pos):
+                button.mouseup_event()
+                break
+
     def _check_events(self):
         """响应按键和鼠标事件"""
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 sys.exit()
-            elif event.type == pygame.KEYDOWN:
+            if event.type == pygame.KEYDOWN:
                 self._check_keydown_events(event)
-            elif event.type == pygame.KEYUP:
+            if event.type == pygame.KEYUP:
                 self._check_keyup_events(event)
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                self._check_mousedown_events(event)
+            if event.type == pygame.MOUSEBUTTONUP:
+                self._check_mouseup_events(event)
 
     def _update_things(self):
         """更新场上资源"""
@@ -92,6 +114,12 @@ class AlienInvasion:
         # 刷新显示
         pygame.display.flip()
 
+    def _at_begin(self):
+        """在游戏开始之前的界面"""
+        self.screen.fill(self.bg_color)
+        self.all_buttons.draw_buttons()
+        pygame.display.flip()
+
     def _game_over(self):
         """定义游戏结束后的行为"""
         self.screen.fill(self.bg_color)
@@ -102,7 +130,9 @@ class AlienInvasion:
         while True:
             self._check_events()
             self.game_stats.game_check()
-            if self.game_stats.game_active:
+            if self.game_stats.game_at_begin:
+                self._at_begin()
+            elif self.game_stats.game_active:
                 self._update_things()
                 self.update_screen()
             else:
